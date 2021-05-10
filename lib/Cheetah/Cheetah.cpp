@@ -158,3 +158,37 @@ uint16_t CelulaDeCarga::testeCelula()
   Serial.println(get_value(20));
   Serial.println("Ajuste o parametro em config.h para obter uma medida precisa");
 }
+
+RTC::RTCset()
+{
+  rtc.halt(false);
+  rtc.setDOW(FRIDAY); 
+  rtc.setTime(20, 37, 0);
+  rtc.setDate(6, 6, 2014);
+  rtc.setSQWRate(SQW_RATE_1);
+  rtc.enableSQW(true);
+
+  memset(variaveis, 0, sizeof(variaveis));
+}
+
+uint16_t* RTC::leituraVariaveis()
+{
+  variaveis[1] = rtc.getTimeStr();
+  variaveis[2] = rtc.getDateStr(FORMAT_SHORT);
+  variaveis[3] = rtc.getDOWStr(FORMAT_SHORT);
+  return variaveis;
+}
+
+Temperature::Temperature()
+{
+  OneWire ourWire(DS18B20);
+  DallasTemperature sensors(&ourWire); 
+  sensors.begin();
+}
+
+uint16_t Temperature::leituraTemp()
+{
+  sensors.requestTemperatures();
+  Temp = sensors.getTempCByIndex(0);
+  return Temp;
+}
