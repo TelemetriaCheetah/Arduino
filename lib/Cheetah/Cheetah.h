@@ -11,6 +11,9 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <HX711.h>
+#include <DS1307.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 #include <config.h>
 
 class CheetahSerial
@@ -64,6 +67,26 @@ class CelulaDeCarga : public HX711
   public:
     CelulaDeCarga::CelulaDeCarga();
     uint16_t testeCelula();
+};
+
+class RTC : public DS1307
+{
+  private:
+   uint16_t variaveis[3];
+
+  public:
+   RTCset();
+   uint16_t* leituraVariaveis();
+};
+
+class Temperature : public DallasTemperature
+{
+  private:
+   uint16_t Temp;
+
+  public:
+   Temperature();
+   uint16_t leituraTemp();
 };
 
 #endif
